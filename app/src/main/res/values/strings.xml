@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">demo</string>
+    <string name="welcome_msg">Welcome</string>
+    <string name="app_logo">Crunchyroll</string>
+    <string name="input_hint_name">Nom</string>
+    <string name="email_placeholder">Email</string>
+    <string name="valid_bnt">Valider</string>
+</resources>
