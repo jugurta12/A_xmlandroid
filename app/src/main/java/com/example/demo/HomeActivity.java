@@ -19,82 +19,105 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity {
 
     private AppDatabase db;
-    private UtilisateurAdapter adapter;
+    private BarAdapter barAdapter; // Utilisation du BarAdapter au lieu de UtilisateurAdapter
+    private SharedPreferences prefs;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        db = Room.databaseBuilder(
-                getApplicationContext(),
-                AppDatabase.class,
-                "app_database"
-        ).build();
+        // Initialisation DB
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "app_database")
+                .fallbackToDestructiveMigration()
+                .build();
 
-        SharedPreferences prefs = getSharedPreferences("mon_app", Context.MODE_PRIVATE);
+        // Récupération Session
+        prefs = getSharedPreferences("mon_app", Context.MODE_PRIVATE);
+        userId = prefs.getInt("utilisateur_id", -1);
         String utilisateur = prefs.getString("utilisateur_connecte", "Anonyme");
-        String email = prefs.getString("utilisateur_email", "");
 
+        // Liaison UI
         TextView welcome = findViewById(R.id.welcome_text);
         Button logoutBtn = findViewById(R.id.logout_btn);
         Button profilBtn = findViewById(R.id.profil_btn);
-        RecyclerView recyclerView = findViewById(R.id.recycler_utilisateurs);
+        Button addBarBtn = findViewById(R.id.add_bar_btn);
+        RecyclerView recyclerViewBars = findViewById(R.id.recycler_bars);
 
         welcome.setText("Bienvenue " + utilisateur);
 
+        // --- ACTIONS ---
+
+        // Aller à la page d'ajout de bar
+        addBarBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, AjoutBarActivity.class);
+            intent.putExtra("USER_ID", userId);
+            startActivity(intent);
+        });
+
+        // Aller au profil
+        profilBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, ProfilActivity.class);
+            intent.putExtra("USER_ID", userId);
+            startActivity(intent);
+        });
+
+        // Déconnexion
         logoutBtn.setOnClickListener(view -> {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.clear(); 
+            editor.clear();
             editor.apply();
-
             Intent intent = new Intent(HomeActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         });
 
-        profilBtn.setOnClickListener(view -> {
-            new AlertDialog.Builder(HomeActivity.this)
-                    .setTitle("Mon profil")
-                    .setMessage("Nom : " + utilisateur + "\nEmail : " + email)
-                    .setPositiveButton("OK", null)
-                    .show();
-        });
+        // --- CONFIGURATION DE LA LISTE DES BARS ---
 
-        adapter = new UtilisateurAdapter(this, null, user -> {
+        // On initialise l'adapter avec une action de suppression
+        // Dans le onCreate de HomeActivity.java
+        barAdapter = new BarAdapter(bar -> {
+            // On prépare le message avec le commentaire
+            String messageInfo = "Adresse : " + bar.adresse + "\n\n" +
+                    "Commentaire : " + bar.commentaire;
+
             new AlertDialog.Builder(HomeActivity.this)
-                    .setTitle("Supprimer")
-                    .setMessage("Supprimer " + user.nom + " ?")
-                    .setPositiveButton("Oui", (d, w) -> {
+                    .setTitle(bar.nom) // Le titre est le nom du bar
+                    .setMessage(messageInfo) // On affiche l'adresse et le commentaire ici
+                    .setPositiveButton("Supprimer", (d, w) -> {
                         new Thread(() -> {
-                            db.utilisateurDao().supprimerUtilisateur(user.id);
-                            List<User> updated = db.utilisateurDao().getTousLesUtilisateurs();
-                            runOnUiThread(() -> {
-                                adapter.setData(updated);
-                                Toast.makeText(HomeActivity.this, user.nom + " supprimé", Toast.LENGTH_SHORT).show();
-                            });
+                            db.barDao().supprimer(bar);
+                            chargerMesBars();
                         }).start();
                     })
-                    .setNegativeButton("Non", null)
+                    .setNegativeButton("Fermer", null) // "Non" devient "Fermer"
                     .show();
         });
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
-        chargerUtilisateurs();
+        recyclerViewBars.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewBars.setAdapter(barAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        chargerUtilisateurs();
+        // Rafraîchir le pseudo si changé dans le profil
+        String utilisateurMaj = prefs.getString("utilisateur_connecte", "Anonyme");
+        TextView welcome = findViewById(R.id.welcome_text);
+        welcome.setText("Bienvenue " + utilisateurMaj);
+
+        // On charge les bars de l'utilisateur à chaque fois qu'on revient sur l'écran
+        chargerMesBars();
     }
 
-    private void chargerUtilisateurs() {
+    private void chargerMesBars() {
         new Thread(() -> {
-            List<User> users = db.utilisateurDao().getTousLesUtilisateurs();
-            runOnUiThread(() -> adapter.setData(users));
+            // Récupère uniquement les bars de l'utilisateur connecté
+            List<Bar> mesBars = db.barDao().getBarsParUtilisateur(userId);
+            runOnUiThread(() -> {
+                barAdapter.setData(mesBars);
+            });
         }).start();
     }
 }

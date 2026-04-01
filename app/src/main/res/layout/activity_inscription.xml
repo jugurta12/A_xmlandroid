@@ -9,7 +9,7 @@
         android:id="@+id/title_inscription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:text="Inscription"
         android:textColor="@color/white"
         android:textSize="24sp"
@@ -18,32 +18,46 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/inscription_nom"
+        android:id="@+id/inscription_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:ems="12"
-        android:hint="Nom"
-        android:inputType="text"
-        android:textColorHint="@color/light_grey"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
         android:textColor="@color/light_grey"
+        android:textColorHint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_inscription" />
 
     <EditText
-        android:id="@+id/inscription_email"
+        android:id="@+id/inscription_pseudo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="12"
-        android:hint="Email"
-        android:textColorHint="@color/light_grey"
+        android:hint="Pseudo"
+        android:inputType="textPersonName"
         android:textColor="@color/light_grey"
-        android:inputType="textEmailAddress"
+        android:textColorHint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inscription_nom" />
+        app:layout_constraintTop_toBottomOf="@+id/inscription_email" />
+
+    <EditText
+        android:id="@+id/inscription_dob"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="12"
+        android:hint="Date de naissance (JJ/MM/AAAA)"
+        android:inputType="date"
+        android:textColor="@color/light_grey"
+        android:textColorHint="@color/light_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inscription_pseudo" />
 
     <EditText
         android:id="@+id/inscription_password"
@@ -52,12 +66,12 @@
         android:layout_marginTop="16dp"
         android:ems="12"
         android:hint="Mot de passe"
-        android:textColorHint="@color/light_grey"
-        android:textColor="@color/light_grey"
         android:inputType="textPassword"
+        android:textColor="@color/light_grey"
+        android:textColorHint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inscription_email" />
+        app:layout_constraintTop_toBottomOf="@+id/inscription_dob" />
 
     <EditText
         android:id="@+id/inscription_confirm"
@@ -66,9 +80,9 @@
         android:layout_marginTop="16dp"
         android:ems="12"
         android:hint="Confirmer le mot de passe"
-        android:textColorHint="@color/light_grey"
-        android:textColor="@color/light_grey"
         android:inputType="textPassword"
+        android:textColor="@color/light_grey"
+        android:textColorHint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inscription_password" />

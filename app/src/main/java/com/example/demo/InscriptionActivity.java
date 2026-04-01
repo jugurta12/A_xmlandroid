@@ -26,9 +26,11 @@ public class InscriptionActivity extends AppCompatActivity {
                 "app_database"
         ).build();
 
+        // Récupération des nouveaux composants UI
         Button inscriptionBtn = findViewById(R.id.inscription_btn);
-        EditText nomInput = findViewById(R.id.inscription_nom);
         EditText emailInput = findViewById(R.id.inscription_email);
+        EditText pseudoInput = findViewById(R.id.inscription_pseudo); // Changé de nom à pseudo
+        EditText dobInput = findViewById(R.id.inscription_dob);       // Nouveau champ Date de naissance
         EditText passwordInput = findViewById(R.id.inscription_password);
         EditText confirmInput = findViewById(R.id.inscription_confirm);
         TextView error = findViewById(R.id.inscription_error);
@@ -39,17 +41,21 @@ public class InscriptionActivity extends AppCompatActivity {
         });
 
         inscriptionBtn.setOnClickListener(view -> {
-            String nom = nomInput.getText().toString();
-            String email = emailInput.getText().toString();
+            // Lecture des valeurs
+            String email = emailInput.getText().toString().trim();
+            String pseudo = pseudoInput.getText().toString().trim();
+            String dob = dobInput.getText().toString().trim();
             String pass = passwordInput.getText().toString();
             String confirm = confirmInput.getText().toString();
 
-            if (nom.isEmpty() || email.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
+            // Vérification si tous les champs sont remplis
+            if (email.isEmpty() || pseudo.isEmpty() || dob.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
                 error.setText("Veuillez remplir tous les champs");
                 error.setVisibility(View.VISIBLE);
                 return;
             }
 
+            // Vérification de la correspondance des mots de passe
             if (!pass.equals(confirm)) {
                 error.setText("Les mots de passe ne correspondent pas");
                 error.setVisibility(View.VISIBLE);
@@ -57,6 +63,7 @@ public class InscriptionActivity extends AppCompatActivity {
             }
 
             new Thread(() -> {
+                // Vérification de l'existence de l'email
                 User existant = db.utilisateurDao().verifierEmailExiste(email);
 
                 runOnUiThread(() -> {
@@ -64,11 +71,14 @@ public class InscriptionActivity extends AppCompatActivity {
                         error.setText("Cet email est déjà utilisé");
                         error.setVisibility(View.VISIBLE);
                     } else {
+                        // Insertion du nouvel utilisateur
                         new Thread(() -> {
                             User newUser = new User();
-                            newUser.nom = nom;
                             newUser.email = email;
+                            newUser.nom = pseudo; // On stocke le pseudo dans le champ nom (ou change le nom dans ta classe User)
+                            newUser.dateNaissance = dob; // Assure-toi que ton entité User possède ce champ
                             newUser.password = pass;
+
                             db.utilisateurDao().inserer(newUser);
 
                             runOnUiThread(() -> {
