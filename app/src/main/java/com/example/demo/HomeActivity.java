@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,7 +29,9 @@ public class HomeActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
         // 1. Initialisation de la Base de Données
+        // Ajout de fallbackToDestructiveMigration pour éviter les crashs de changement de version
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "app_database")
                 .fallbackToDestructiveMigration()
                 .build();
@@ -40,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
         userId = prefs.getInt("utilisateur_id", -1);
         String utilisateurNom = prefs.getString("utilisateur_connecte", "Anonyme");
 
-        // 3. Liaison des composants UI (Vérifie bien les IDs dans ton activity_home.xml)
+        // 3. Liaison des composants UI
         TextView welcome = findViewById(R.id.welcome_text);
         Button logoutBtn = findViewById(R.id.logout_btn);
         Button profilBtn = findViewById(R.id.profil_btn);
@@ -51,24 +52,21 @@ public class HomeActivity extends AppCompatActivity {
 
         // --- ACTIONS DES BOUTONS ---
 
-        // Ouvrir la page d'ajout de bar
         addBarBtn.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, AjoutBarActivity.class);
             intent.putExtra("USER_ID", userId);
             startActivity(intent);
         });
 
-        // Ouvrir le profil
         profilBtn.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, ProfilActivity.class);
             intent.putExtra("USER_ID", userId);
             startActivity(intent);
         });
 
-        // Déconnexion
         logoutBtn.setOnClickListener(view -> {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.clear(); // Supprime l'ID et le nom pour fermer la session
+            editor.clear();
             editor.apply();
 
             Intent intent = new Intent(HomeActivity.this, MainActivity.class);
@@ -76,30 +74,16 @@ public class HomeActivity extends AppCompatActivity {
             finish();
         });
 
-        // --- CONFIGURATION DE LA LISTE DES BARS ---
+        // --- CONFIGURATION DE LA LISTE DES BARS (AVEC LA NOUVELLE PAGE) ---
 
-        // Initialisation de l'adapter avec la logique de clic (Affichage + Suppression)
+        // On remplace le popup par l'ouverture de BarDetailActivity
         barAdapter = new BarAdapter(bar -> {
-            // Sécurité pour le commentaire s'il est vide
-            String comm = (bar.commentaire == null || bar.commentaire.isEmpty()) ? "Aucun commentaire." : bar.commentaire;
-
-            String details = "Adresse : " + bar.adresse + "\n\n" +
-                    "Commentaire : " + comm;
-
-            new AlertDialog.Builder(HomeActivity.this)
-                    .setTitle(bar.nom)
-                    .setMessage(details)
-                    .setPositiveButton("Supprimer", (dialog, which) -> {
-                        new Thread(() -> {
-                            db.barDao().supprimer(bar);
-                            chargerMesBars(); // Rafraîchit la liste après suppression
-                        }).start();
-                    })
-                    .setNegativeButton("Fermer", null)
-                    .show();
+            Intent intent = new Intent(HomeActivity.this, BarDetailActivity.class);
+            // On passe l'ID du bar pour que la page de détails puisse le charger
+            intent.putExtra("BAR_ID", bar.id);
+            startActivity(intent);
         });
 
-        // Setup du RecyclerView
         recyclerViewBars.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewBars.setAdapter(barAdapter);
     }
@@ -107,18 +91,16 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Rafraîchir le nom au cas où il a été changé dans le Profil
         String utilisateurMaj = prefs.getString("utilisateur_connecte", "Anonyme");
         TextView welcome = findViewById(R.id.welcome_text);
         welcome.setText("Bienvenue " + utilisateurMaj);
 
-        // Recharger la liste des bars (utile quand on revient d'AjoutBarActivity)
+        // Recharger la liste des bars
         chargerMesBars();
     }
 
     private void chargerMesBars() {
         new Thread(() -> {
-            // On récupère uniquement les bars appartenant à cet utilisateur
             List<Bar> mesBars = db.barDao().getBarsParUtilisateur(userId);
             runOnUiThread(() -> {
                 if (barAdapter != null) {

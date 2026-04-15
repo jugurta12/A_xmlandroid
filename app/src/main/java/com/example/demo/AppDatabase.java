@@ -9,3 +9,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDAO utilisateurDao();
     public abstract BarDAO barDao(); // Ajoute cette ligne
 }
+
+

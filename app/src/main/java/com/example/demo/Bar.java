@@ -16,4 +16,6 @@ public class Bar {
     public String commentaire;
     public String ambiances;
     public String photosPaths;
+    public double latitude;
+    public double longitude;
 }

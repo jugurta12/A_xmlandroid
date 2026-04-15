@@ -1,137 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@android:color/white"
-    android:padding="20dp">
+    android:background="@android:color/white">
 
-    <EditText
-        android:id="@+id/nom_bar"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nom du Bar"
-        android:textColorHint="#888888"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="10dp" />
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <EditText
-        android:id="@+id/adresse_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Adresse"
-        android:textColorHint="#888888"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="20dp" />
+        <EditText
+            android:id="@+id/nom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nom du Bar"
+            android:textColor="@android:color/black"
+            android:minHeight="48dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Note :"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="30dp"
-        android:textStyle="bold" />
+        <EditText
+            android:id="@+id/adresse_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Adresse du Bar"
+            android:textColor="@android:color/black"
+            android:minHeight="48dp" />
 
-    <RatingBar
-        android:id="@+id/rating_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:numStars="5"
-        android:progressTint="@color/blue_logo"
-        android:stepSize="1" />
-
-    <EditText
-        android:id="@+id/comm_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Commentaire..."
-        android:textColorHint="#888888"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="20dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ambiances (3 max) :"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="20dp"
-        android:textStyle="bold" />
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chip_group_ambiance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:chipSpacingVertical="8dp"
-        app:chipSpacingHorizontal="8dp">
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_chill"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chill" />
+            android:layout_marginTop="15dp"
+            android:text="Note :"
+            android:textStyle="bold" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_lgbt"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
+        <RatingBar
+            android:id="@+id/rating_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LGBTQIA+" />
+            android:numStars="5"
+            android:stepSize="1" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_shatta"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
+        <EditText
+            android:id="@+id/comm_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Petit commentaire..."
+            android:minHeight="48dp" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shatta" />
+            android:layout_marginTop="15dp"
+            android:text="Ambiances (max 3) :"
+            android:textStyle="bold" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_house"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_ambiance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:chipSpacingVertical="8dp"
+            app:chipSpacingHorizontal="8dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_chill"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chill" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_techno"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Techno" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_rock"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rock" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cocktails"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cocktails" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_electro"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Électro" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="House" />
+            android:layout_marginTop="20dp"
+            android:text="Aperçu de la position :"
+            android:textStyle="bold" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_commercial"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="wrap_content"
+        <org.osmdroid.views.MapView
+            android:id="@+id/map_preview"
+            android:layout_width="match_parent"
+            android:layout_height="214dp"
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:id="@+id/btn_add_photo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Commercial" />
+            android:layout_marginTop="20dp"
+            android:text="Ajouter une photo" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_techno"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/save_bar_btn"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Techno" />
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/blue_logo"
+            android:text="ENREGISTRER LE BAR" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_hard"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hard" />
-
-    </com.google.android.material.chip.ChipGroup>
-
-
-    <Button
-        android:id="@+id/save_bar_btn"
-        android:textAllCaps="false"
-        app:cornerRadius="28dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="@color/blue_logo"
-        android:text="ENREGISTRER MON BAR"
-        android:textColor="@android:color/white" />
-
-    <Button
-        android:id="@+id/btn_add_photo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ajouter une photo à l'album" />
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

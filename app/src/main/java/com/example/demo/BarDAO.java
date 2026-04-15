@@ -16,4 +16,7 @@ public interface BarDAO {
 
     @Delete
     void supprimer(Bar bar);
+
+    @Query
+    ("SELECT * FROM bars WHERE id = :id") Bar getBarById(int id);
 }
