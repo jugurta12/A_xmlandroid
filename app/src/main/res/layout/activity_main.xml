@@ -20,7 +20,7 @@
 
     <EditText
         android:id="@+id/email_input"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="12"
@@ -29,13 +29,14 @@
         android:inputType="textEmailAddress"
         android:textColor="@color/dark_brown"
         android:textColorHint="@color/light_grey"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
         android:id="@+id/password_input"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="12"
@@ -44,6 +45,7 @@
         android:inputType="textPassword"
         android:textColor="@color/dark_brown"
         android:textColorHint="@color/light_grey"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_input" />
