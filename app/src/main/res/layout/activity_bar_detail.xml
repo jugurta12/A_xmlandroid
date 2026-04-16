@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,9 +15,9 @@
             android:id="@+id/detail_nom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/dark_brown"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black" />
+            android:textStyle="bold" />
 
         <RatingBar
             android:id="@+id/detail_rating"
@@ -47,14 +47,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:background="#F5F5F5"
+            android:background="#EDEDED"
             android:padding="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Localisation :"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Localisation :"
             android:textStyle="bold" />
 
         <org.osmdroid.views.MapView
@@ -68,9 +69,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:backgroundTint="#FF5252"
-            android:text="Supprimer ce bar"
-            android:textColor="@android:color/white" />
+            android:backgroundTint="@color/light_brown"
+            android:text="Supprimer ce Spot"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 </ScrollView>

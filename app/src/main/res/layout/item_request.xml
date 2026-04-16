@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="#1E1E1E"
+    app:cardBackgroundColor="@color/light_brown"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center_vertical">
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -25,6 +25,7 @@
                 android:id="@+id/tv_sender_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_bold"
                 android:text="email@test.com"
                 android:textColor="@color/white"
                 android:textSize="16sp"
@@ -33,6 +34,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_medium"
                 android:text="veut être ton ami"
                 android:textColor="#BBFFFFFF"
                 android:textSize="12sp" />
@@ -43,7 +45,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@android:color/transparent"
-            android:src="@android:drawable/ic_menu_save"
+            android:src="@android:drawable/ic_input_add"
             app:tint="#4CAF50" />
 
         <ImageButton
@@ -53,7 +55,7 @@
             android:layout_marginStart="8dp"
             android:background="@android:color/transparent"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:tint="#F44336" />
+            app:tint="#E91E63" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

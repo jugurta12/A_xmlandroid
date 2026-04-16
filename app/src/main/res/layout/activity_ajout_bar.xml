@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,30 +15,39 @@
             android:id="@+id/nom_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nom du Bar"
-            android:textColor="@android:color/black"
-            android:minHeight="48dp" />
+            android:fontFamily="@font/quicksand_medium"
+            android:hint="Nom du Spot"
+            android:minHeight="48dp"
+            android:textColor="@color/dark_brown"
+            android:textColorHint="@color/light_brown"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/adresse_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Adresse du Bar"
-            android:textColor="@android:color/black"
-            android:minHeight="48dp" />
+            android:fontFamily="@font/quicksand_medium"
+            android:hint="Adresse du Spot"
+            android:minHeight="48dp"
+            android:textColor="@color/dark_brown"
+            android:textColorHint="@color/light_brown"
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:fontFamily="@font/quicksand_bold"
             android:text="Note :"
+            android:textColor="@color/dark_brown"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <RatingBar
             android:id="@+id/rating_bar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="43dp"
             android:numStars="5"
             android:stepSize="1" />
 
@@ -47,14 +56,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:fontFamily="@font/quicksand_medium"
             android:hint="Petit commentaire..."
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            android:textColor="@color/dark_brown"
+            android:textColorHint="@color/light_brown"
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="Ambiances (max 3) :"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Genres (max 3) :"
+            android:textColor="@color/dark_brown"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <com.google.android.material.chip.ChipGroup
@@ -62,43 +78,88 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            app:chipSpacingVertical="8dp"
-            app:chipSpacingHorizontal="8dp">
+            app:chipSpacingHorizontal="8dp"
+            app:chipSpacingVertical="8dp">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_chill"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chill" />
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Festif"
+                android:textColor="@color/light_blue"
+                app:chipBackgroundColor="@color/blue" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_chill2"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Ambiancé"
+                android:textColor="@color/light_blue"
+                app:chipBackgroundColor="@color/blue" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_chill3"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Culturel"
+                android:textColor="@color/light_blue"
+                app:chipBackgroundColor="@color/blue" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_chill4"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Espace vert"
+                android:textColor="@color/light_blue"
+                app:chipBackgroundColor="@color/blue" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_techno"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Techno" />
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Terrasse"
+                android:textColor="@color/light_blue"
+                app:chipBackgroundColor="@color/blue" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_rock"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rock" />
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Éducatif"
+                android:textColor="@color/light_blue"
+                app:chipBackgroundColor="@color/blue" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_cocktails"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cocktails" />
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Abordable"
+                android:textColor="@color/light_blue"
+                app:chipBackgroundColor="@color/blue" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_electro"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Électro" />
+                android:fontFamily="@font/quicksand_medium"
+                android:text="18-28"
+                android:textColor="@color/light_blue"
+                app:chipBackgroundColor="@color/blue" />
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -106,13 +167,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/quicksand_bold"
             android:text="Aperçu de la position :"
+            android:textColor="@color/dark_brown"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <org.osmdroid.views.MapView
             android:id="@+id/map_preview"
             android:layout_width="match_parent"
-            android:layout_height="214dp"
+            android:layout_height="156dp"
             android:layout_marginTop="10dp" />
 
         <Button
@@ -120,15 +184,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Ajouter une photo" />
+            android:backgroundTint="@color/dark_brown"
+            android:text="Ajouter une photo"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/save_bar_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:backgroundTint="@color/blue_logo"
-            android:text="ENREGISTRER LE BAR" />
+            android:backgroundTint="@color/dark_brown"
+            android:text="ENREGISTRER LE SPOT"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 </ScrollView>

@@ -18,8 +18,9 @@
             android:id="@+id/item_nom_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nom du Bar"
-            android:textColor="@android:color/black"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Nom du Spot"
+            android:textColor="@color/dark_brown"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -38,7 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Adresse du bar"
+            android:fontFamily="@font/quicksand_medium"
+            android:text="Adresse du spot"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
 
@@ -58,9 +60,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/quicksand_medium"
             android:text="Mon commentaire"
-            android:textStyle="italic"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/dark_brown"
+            android:textStyle="italic" />
 
         <Button
             android:id="@+id/btn_consulter_album"

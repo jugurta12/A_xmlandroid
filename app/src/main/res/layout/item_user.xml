@@ -24,19 +24,21 @@
             android:id="@+id/user_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/quicksand_bold"
             android:text="Pseudo"
+            android:textColor="@color/dark_brown"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black" />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btn_add_friend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:fontFamily="@font/quicksand_bold"
             android:text="Ajouter"
-            android:backgroundTint="@color/blue_logo"
             android:textColor="@color/white" />
 
     </LinearLayout>

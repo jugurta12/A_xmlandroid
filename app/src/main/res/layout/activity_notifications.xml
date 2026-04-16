@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_grey">
+    android:background="@color/background">
 
     <ImageButton
         android:id="@+id/btn_back_notif"
@@ -16,14 +16,14 @@
         android:src="@android:drawable/ic_menu_revert"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/white" />
+        app:tint="@color/light_brown" />
 
     <TextView
         android:id="@+id/title_notif"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Demandes d'amis"
-        android:textColor="@color/white"
+        android:textColor="@color/dark_brown"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/btn_back_notif"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
-        android:background="#33FFFFFF"
+        android:background="@color/light_brown"
         app:layout_constraintTop_toBottomOf="@+id/btn_back_notif" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Aucune demande en attente"
-        android:textColor="#88FFFFFF"
+        android:textColor="@color/dark_brown"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
