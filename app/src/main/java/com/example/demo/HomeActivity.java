@@ -45,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
         TextView welcome = findViewById(R.id.welcome_text);
         Button logoutBtn = findViewById(R.id.logout_btn);
         Button profilBtn = findViewById(R.id.profil_btn);
+        Button friendsBtn = findViewById(R.id.friends_btn); // Nouveau bouton Amis
         Button addBarBtn = findViewById(R.id.add_bar_btn);
         RecyclerView recyclerViewBars = findViewById(R.id.recycler_bars);
 
@@ -56,19 +57,25 @@ public class HomeActivity extends AppCompatActivity {
 
         // --- ACTIONS DES BOUTONS ---
 
-        // Icône Loupe -> Recherche
+        // Icône Loupe -> Recherche d'amis
         btnGoToSearch.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, RechercheActivity.class);
             startActivity(intent);
         });
 
-        // Icône Cloche -> Notifications (Demandes d'amis)
+        // Icône Cloche -> Notifications (Demandes reçues)
         btnNotifications.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, NotificationsActivity.class);
             startActivity(intent);
         });
 
-        // Bouton Profil -> Vers ton Profil (ou à définir)
+        // Bouton Mes Amis -> Liste des amis acceptés
+        friendsBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, FriendsListActivity.class);
+            startActivity(intent);
+        });
+
+        // Bouton Profil -> Vers ton Profil
         profilBtn.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, ProfilActivity.class);
             intent.putExtra("USER_ID", userId);

@@ -3,11 +3,150 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="@color/background">
+=======
+    android:background="@color/dark_grey"> <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/nom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nom du Bar"
+        android:textColor="@android:color/white"
+        android:textColorHint="#AAAAAA"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/adresse_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Adresse du Bar"
+        android:textColor="@android:color/white"
+        android:textColorHint="#AAAAAA"
+        android:minHeight="48dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Note :"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+    <RatingBar
+        android:id="@+id/rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:progressTint="@color/blue_logo"
+        android:stepSize="1" />
+
+    <EditText
+        android:id="@+id/comm_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Petit commentaire..."
+        android:textColor="@android:color/white"
+        android:textColorHint="#AAAAAA"
+        android:minHeight="48dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Ambiances (max 3) :"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_ambiance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:chipSpacingVertical="8dp"
+        app:chipSpacingHorizontal="8dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_chill"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chill"
+            android:textColor="@color/white"
+            app:chipBackgroundColor="#444444" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_techno"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Techno"
+            android:textColor="@color/white"
+            app:chipBackgroundColor="#444444" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_rock"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rock"
+            android:textColor="@color/white"
+            app:chipBackgroundColor="#444444" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_cocktails"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cocktails"
+            android:textColor="@color/white"
+            app:chipBackgroundColor="#444444" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_electro"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Électro"
+            android:textColor="@color/white"
+            app:chipBackgroundColor="#444444" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Aperçu de la position :"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/map_preview"
+        android:layout_width="match_parent"
+        android:layout_height="214dp"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/btn_add_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#555555"
+        android:text="Ajouter une photo" />
+>>>>>>> 32bec89 (modif)
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:orientation="vertical"
         android:padding="20dp">
 
@@ -33,10 +172,27 @@
             android:textColor="@color/dark_brown"
             android:textColorHint="@color/light_brown"
             android:textSize="16sp" />
+=======
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="#33FFFFFF"
+        android:padding="12dp"
+        android:orientation="horizontal">
+>>>>>>> 32bec89 (modif)
 
         <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Rendre ce spot privé (caché aux amis)"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_private"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:layout_marginTop="15dp"
             android:fontFamily="@font/quicksand_bold"
             android:text="Note :"
@@ -197,5 +353,20 @@
             android:text="ENREGISTRER LE SPOT"
             android:textColor="@color/white" />
 
+=======
+            android:text="Rendre ce spot privé"
+            app:thumbTint="@color/blue_logo" />
+>>>>>>> 32bec89 (modif)
     </LinearLayout>
+
+    <Button
+        android:id="@+id/save_bar_btn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/blue_logo"
+        android:text="ENREGISTRER LE BAR"
+        android:textStyle="bold" />
+
+</LinearLayout>
 </ScrollView>

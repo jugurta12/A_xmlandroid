@@ -11,6 +11,8 @@ public class Bar {
 
     public int utilisateurId; // Pour savoir à quel user appartient le bar
     public String nom;
+    public String userEmail; // Ajoute ça
+    public boolean isPrivate;
     public String adresse;
     public float note; // Pour les étoiles
     public String commentaire;
@@ -18,4 +20,6 @@ public class Bar {
     public String photosPaths;
     public double latitude;
     public double longitude;
+
+    public Bar() {}
 }

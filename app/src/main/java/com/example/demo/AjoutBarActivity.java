@@ -1,13 +1,16 @@
 package com.example.demo;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -16,10 +19,12 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat; // CORRECTION ICI : L'import correct
 import androidx.room.Room;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,17 +43,20 @@ import java.util.Scanner;
 
 public class AjoutBarActivity extends AppCompatActivity {
     private AppDatabase db;
+    private FirebaseFirestore dbFirebase; // Firebase
     private int userId;
+    private String userEmail;
 
-    // Variables UI et Map
     private MapView mapPreview;
     private EditText editAdresse;
+
+    // CORRECTION ICI : Utilisation de SwitchCompat
+    private SwitchCompat switchPrivate;
+
     private double latSelectionnee = 0;
     private double lonSelectionnee = 0;
     private Handler handler = new Handler();
     private Runnable runnable;
-
-    // Le drapeau pour bloquer la recherche automatique après un choix
     private boolean isSelectionByClick = false;
 
     private List<String> barPhotosPaths = new ArrayList<>();
@@ -80,17 +88,27 @@ public class AjoutBarActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Ajouter un bar");
         }
 
+        // 1. Initialisation Bases de données
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "app_database")
                 .fallbackToDestructiveMigration()
                 .build();
+        dbFirebase = FirebaseFirestore.getInstance();
 
+        // 2. Récupération infos utilisateur
         userId = getIntent().getIntExtra("USER_ID", -1);
+        SharedPreferences prefs = getSharedPreferences("mon_app", Context.MODE_PRIVATE);
+        userEmail = prefs.getString("utilisateur_email", "");
 
+        // 3. Liaison UI
         EditText editNom = findViewById(R.id.nom_bar);
         editAdresse = findViewById(R.id.adresse_bar);
         EditText editComm = findViewById(R.id.comm_bar);
         RatingBar ratingBar = findViewById(R.id.rating_bar);
         ChipGroup chipGroupAmbiance = findViewById(R.id.chip_group_ambiance);
+
+        // CORRECTION ICI : Liaison avec le bon type
+        switchPrivate = findViewById(R.id.switch_private);
+
         Button btnSave = findViewById(R.id.save_bar_btn);
         Button btnAddPhoto = findViewById(R.id.btn_add_photo);
 
@@ -99,24 +117,14 @@ public class AjoutBarActivity extends AppCompatActivity {
         mapPreview.getController().setZoom(15.0);
         mapPreview.getController().setCenter(new GeoPoint(48.8566, 2.3522));
 
-        // --- LOGIQUE LIVE SEARCH ---
+        // --- RECHERCHE ADRESSE ---
         editAdresse.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (runnable != null) handler.removeCallbacks(runnable);
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // SI ON VIENT DE CLIQUER SUR UNE SUGGESTION, ON S'ARRÊTE LÀ
-                if (isSelectionByClick) {
-                    isSelectionByClick = false;
-                    return;
-                }
-
+            @Override public void afterTextChanged(Editable s) {
+                if (isSelectionByClick) { isSelectionByClick = false; return; }
                 String query = s.toString().trim();
                 if (query.length() > 6) {
                     runnable = () -> chercherAdressesLive(query);
@@ -127,22 +135,16 @@ public class AjoutBarActivity extends AppCompatActivity {
 
         btnAddPhoto.setOnClickListener(v -> getBarPhoto.launch("image/*"));
 
-        for (int i = 0; i < chipGroupAmbiance.getChildCount(); i++) {
-            Chip chip = (Chip) chipGroupAmbiance.getChildAt(i);
-            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked && chipGroupAmbiance.getCheckedChipIds().size() > 3) {
-                    buttonView.setChecked(false);
-                    Toast.makeText(this, "3 ambiances maximum !", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-
+        // --- BOUTON ENREGISTRER ---
         btnSave.setOnClickListener(v -> {
             String nom = editNom.getText().toString().trim();
             if (nom.isEmpty()) {
                 Toast.makeText(this, "Le nom est obligatoire", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            // Récupération de l'état du Switch (Privé ou Public)
+            boolean isPrivate = switchPrivate.isChecked();
 
             List<Integer> ids = chipGroupAmbiance.getCheckedChipIds();
             List<String> selectedAmbiances = new ArrayList<>();
@@ -152,21 +154,35 @@ public class AjoutBarActivity extends AppCompatActivity {
             }
 
             new Thread(() -> {
+                // Création de l'objet Bar
                 Bar nouveauBar = new Bar();
                 nouveauBar.nom = nom;
                 nouveauBar.adresse = editAdresse.getText().toString();
                 nouveauBar.commentaire = editComm.getText().toString();
                 nouveauBar.note = ratingBar.getRating();
                 nouveauBar.utilisateurId = userId;
+
+                // Champs cruciaux pour le Cloud et le partage
+                nouveauBar.userEmail = userEmail;
+                nouveauBar.isPrivate = isPrivate;
+
                 nouveauBar.ambiances = TextUtils.join(", ", selectedAmbiances);
                 nouveauBar.photosPaths = TextUtils.join(",", barPhotosPaths);
                 nouveauBar.latitude = latSelectionnee;
                 nouveauBar.longitude = lonSelectionnee;
 
+                // 1. Sauvegarde Locale (Room)
                 db.barDao().inserer(nouveauBar);
+
+                // 2. Sauvegarde Cloud (Firebase)
+                dbFirebase.collection("bars")
+                        .add(nouveauBar)
+                        .addOnSuccessListener(doc -> Log.d("Firebase", "Bar synchronisé avec succès !"))
+                        .addOnFailureListener(e -> Log.e("Firebase", "Erreur de synchronisation", e));
+
                 runOnUiThread(() -> {
-                    Toast.makeText(this, "Bar ajouté !", Toast.LENGTH_SHORT).show();
-                    finish();
+                    Toast.makeText(this, isPrivate ? "Spot ajouté en privé" : "Spot ajouté et partagé !", Toast.LENGTH_SHORT).show();
+                    finish(); // Retour à l'écran précédent
                 });
             }).start();
         });
@@ -198,21 +214,18 @@ public class AjoutBarActivity extends AppCompatActivity {
                             }
 
                             new AlertDialog.Builder(this)
-                                    .setTitle("Choisissez l'adresse :")
+                                    .setTitle("Choisissez l'adresse exact :")
                                     .setItems(suggestions, (dialog, which) -> {
                                         try {
                                             JSONObject obj = jsonArray.getJSONObject(which);
                                             latSelectionnee = obj.getDouble("lat");
                                             lonSelectionnee = obj.getDouble("lon");
-
-                                            // ON ACTIVE LE DRAPEAU AVANT LE SETTEXT
                                             isSelectionByClick = true;
                                             editAdresse.setText(suggestions[which]);
 
                                             GeoPoint point = new GeoPoint(latSelectionnee, lonSelectionnee);
                                             mapPreview.getController().animateTo(point);
                                             mapPreview.getController().setZoom(18.0);
-
                                             mapPreview.getOverlays().clear();
                                             Marker m = new Marker(mapPreview);
                                             m.setPosition(point);
@@ -224,27 +237,11 @@ public class AjoutBarActivity extends AppCompatActivity {
                         } catch (Exception e) { e.printStackTrace(); }
                     });
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) { e.printStackTrace(); }
         }).start();
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mapPreview.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mapPreview.onPause();
-    }
+    @Override protected void onResume() { super.onResume(); mapPreview.onResume(); }
+    @Override protected void onPause() { super.onPause(); mapPreview.onPause(); }
+    @Override public boolean onSupportNavigateUp() { finish(); return true; }
 }
