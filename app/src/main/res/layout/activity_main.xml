@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_grey"
+    android:background="@color/background"
     tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="195dp"
-        android:layout_height="278dp"
+        android:layout_width="308dp"
+        android:layout_height="261dp"
         android:layout_marginTop="71dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -24,10 +24,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="12"
+        android:fontFamily="@font/quicksand_medium"
         android:hint="@string/email_placeholder"
-        android:textColorHint="@color/light_grey"
-        android:textColor="@color/light_grey"
         android:inputType="textEmailAddress"
+        android:textColor="@color/dark_brown"
+        android:textColorHint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -38,10 +39,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="12"
-        android:hint="Mot de passe"
-        android:textColorHint="@color/light_grey"
-        android:textColor="@color/light_grey"
+        android:fontFamily="@font/quicksand_medium"
+        android:hint="@string/mot_de_passe"
         android:inputType="textPassword"
+        android:textColor="@color/dark_brown"
+        android:textColorHint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_input" />
@@ -61,25 +63,27 @@
         android:id="@+id/valid_btn"
         android:layout_width="310dp"
         android:layout_height="44dp"
-        android:layout_marginBottom="56dp"
-        android:backgroundTint="@color/pink"
+        android:backgroundTint="@color/dark_brown"
+        android:fontFamily="@font/quicksand_bold"
         android:text="@string/valid_bnt"
         android:textAllCaps="false"
         app:cornerRadius="28dp"
-        app:layout_constraintBottom_toTopOf="@+id/go_inscription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="562dp" />
 
     <TextView
         android:id="@+id/go_inscription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:text="Pas de compte ? S'inscrire"
-        android:textColor="@color/blue_logo"
+        android:layout_marginBottom="104dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="@string/pas_de_compte_s_inscrire"
+        android:textColor="@color/light_brown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/valid_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

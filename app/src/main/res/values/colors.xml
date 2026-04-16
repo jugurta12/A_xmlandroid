@@ -2,6 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="background">#F0F7F4</color>
+    <color name="dark_brown">#32292F</color>
+    <color name="light_brown">#705D56</color>
+    <color name="light_blue">#99E1D9</color>
+    <color name="blue">#70ABAF</color>
+    
+    
     <color name="dark_grey">#000318</color>
     <color name="blue_logo">#2176FF</color>
     <color name="light_grey">#888888</color>

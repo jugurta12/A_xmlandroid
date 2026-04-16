@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_grey">
+    android:background="@color/background">
 
     <TextView
         android:id="@+id/title_inscription"
@@ -21,15 +22,15 @@
         android:id="@+id/inscription_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:ems="12"
+        android:fontFamily="@font/quicksand_medium"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:textColor="@color/light_grey"
         android:textColorHint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_inscription" />
+        tools:layout_editor_absoluteY="193dp" />
 
     <EditText
         android:id="@+id/inscription_pseudo"
@@ -49,7 +50,6 @@
         android:id="@+id/inscription_dob"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
         android:ems="12"
         android:hint="Date de naissance (JJ/MM/AAAA)"
         android:inputType="date"
@@ -57,37 +57,33 @@
         android:textColorHint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inscription_pseudo" />
+        tools:layout_editor_absoluteY="419dp" />
 
     <EditText
         android:id="@+id/inscription_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:ems="12"
         android:hint="Mot de passe"
         android:inputType="textPassword"
         android:textColor="@color/light_grey"
         android:textColorHint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inscription_dob" />
+        tools:layout_editor_absoluteY="304dp" />
 
     <EditText
         android:id="@+id/inscription_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="188dp"
         android:ems="12"
         android:hint="Confirmer le mot de passe"
         android:inputType="textPassword"
         android:textColor="@color/light_grey"
         android:textColorHint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.387"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inscription_password" />
+        tools:layout_editor_absoluteY="365dp" />
 
     <TextView
         android:id="@+id/inscription_error"
@@ -104,7 +100,6 @@
         android:id="@+id/inscription_btn"
         android:layout_width="310dp"
         android:layout_height="44dp"
-        android:layout_marginTop="212dp"
         android:backgroundTint="@color/pink"
         android:text="S'inscrire"
         android:textAllCaps="false"
@@ -112,7 +107,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inscription_error" />
+        tools:layout_editor_absoluteY="579dp" />
 
     <TextView
         android:id="@+id/go_login"
@@ -124,12 +119,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inscription_btn" />
-
-    <EditText
-        android:id="@+id/inscription_dob"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Date de naissance (JJ/MM/AAAA)"
-        android:inputType="date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
