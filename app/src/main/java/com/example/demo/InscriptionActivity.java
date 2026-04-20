@@ -14,8 +14,6 @@ import androidx.room.Room;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Calendar;
-
 public class InscriptionActivity extends AppCompatActivity {
 
     private AppDatabase db;
@@ -68,8 +66,6 @@ public class InscriptionActivity extends AppCompatActivity {
                 return;
             }
 
-            // ... (Vérification de l'année de naissance inchangée)
-
             if (!pass.equals(confirm)) {
                 showError(error, "Les mots de passe ne correspondent pas");
                 return;
@@ -84,7 +80,7 @@ public class InscriptionActivity extends AppCompatActivity {
                     if (existant != null) {
                         showError(error, "Cet email est déjà utilisé");
                     } else {
-                        // 2. NOUVEAU : Vérifier si le pseudo est unique sur Firebase
+                        // 2. Vérifier si le pseudo est unique sur Firebase
                         verifierPseudoUniqueSurFirebase(email, pseudo, dob, pass, error);
                     }
                 });
@@ -94,35 +90,36 @@ public class InscriptionActivity extends AppCompatActivity {
 
     private void verifierPseudoUniqueSurFirebase(String email, String pseudo, String dob, String pass, TextView error) {
         dbFirebase.collection("users")
-                .whereEqualTo("nom", pseudo) // "nom" correspond au champ pseudo dans ta classe User
+                .whereEqualTo("nom", pseudo)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         if (!task.getResult().isEmpty()) {
-                            // Si la liste n'est pas vide, quelqu'un a déjà ce pseudo
-                            showError(error, "Ce pseudo est déjà pris par un autre utilisateur");
+                            showError(error, "Ce pseudo est déjà pris");
                         } else {
-                            // Le pseudo est libre, on crée le compte
                             creerNouvelUtilisateur(email, pseudo, dob, pass);
                         }
                     } else {
-                        Toast.makeText(this, "Erreur de connexion serveur", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Erreur serveur", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private void creerNouvelUtilisateur(String email, String pseudo, String dob, String pass) {
         new Thread(() -> {
+            // --- CRÉATION DE L'UTILISATEUR AVEC MOT DE PASSE HACHÉ ---
             User newUser = new User();
             newUser.email = email;
             newUser.nom = pseudo;
             newUser.dateNaissance = dob;
-            newUser.password = pass;
 
-            // Sauvegarde locale
+            // On utilise HashUtil pour hacher le mot de passe avant stockage
+            newUser.password = HashUtil.hashPassword(pass);
+
+            // Sauvegarde locale (Room)
             db.utilisateurDao().inserer(newUser);
 
-            // Sauvegarde Cloud
+            // Sauvegarde Cloud (Firebase)
             dbFirebase.collection("users")
                     .document(email)
                     .set(newUser)

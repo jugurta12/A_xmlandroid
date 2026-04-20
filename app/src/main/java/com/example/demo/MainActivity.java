@@ -21,15 +21,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        // Cache la barre en haut
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
-        // Vérification de session au démarrage
+        // --- VÉRIFICATION DE SESSION ---
         prefs = getSharedPreferences("mon_app", Context.MODE_PRIVATE);
         int userId = prefs.getInt("utilisateur_id", -1);
+
         if (userId != -1) {
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
@@ -38,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_main);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
 
         db = Room.databaseBuilder(
                 getApplicationContext(),
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         validBtn.setOnClickListener(view -> {
-            String email = emailInput.getText().toString();
+            String email = emailInput.getText().toString().trim();
             String pass = passwordInput.getText().toString();
 
             if (email.isEmpty() || pass.isEmpty()) {
@@ -66,8 +66,13 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
+            // --- HACHAGE DU MOT DE PASSE POUR LA COMPARAISON ---
+            // On transforme le mot de passe tapé en son empreinte SHA-256
+            String passHache = HashUtil.hashPassword(pass);
+
             new Thread(() -> {
-                User user = db.utilisateurDao().verifierLogin(email, pass);
+                // On cherche l'utilisateur avec l'email et le mot de passe HACHÉ
+                User user = db.utilisateurDao().verifierLogin(email, passHache);
 
                 runOnUiThread(() -> {
                     if (user != null) {

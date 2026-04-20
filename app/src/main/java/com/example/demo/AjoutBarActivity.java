@@ -85,7 +85,7 @@ public class AjoutBarActivity extends AppCompatActivity {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Ajouter un bar");
+            getSupportActionBar().setTitle("Ajouter un spot");
         }
 
         // 1. Initialisation Bases de données

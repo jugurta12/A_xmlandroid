@@ -59,8 +59,10 @@ public class FriendProfilActivity extends AppCompatActivity {
         // On réutilise ton BarAdapter avec un clic vers les détails
         adapter = new BarAdapter(bar -> {
             Intent intent = new Intent(this, BarDetailActivity.class);
-            intent.putExtra("BAR_ID", bar.id); // Attention: l'ID Room de l'ami n'est pas le tien !
-            // Pour bien faire, il faudrait passer l'objet complet ou un ID Firebase
+            // On signale que c'est un bar d'ami pour pas chercher dans Room
+            intent.putExtra("IS_FRIEND_BAR", true);
+            intent.putExtra("BAR_NOM", bar.nom); // On utilise le nom pour la recherche Firebase
+            intent.putExtra("FRIEND_EMAIL", friendEmail);
             startActivity(intent);
         });
         rv.setAdapter(adapter);

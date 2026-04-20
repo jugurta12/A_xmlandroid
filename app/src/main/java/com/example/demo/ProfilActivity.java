@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Patterns; // Import pour la validation email
+import android.util.Log;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +15,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfilActivity extends AppCompatActivity {
 
@@ -50,8 +53,7 @@ public class ProfilActivity extends AppCompatActivity {
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "app_database").build();
         userId = getIntent().getIntExtra("USER_ID", -1);
 
-        // --- LIAISON DES COMPOSANTS ---
-        EditText editEmail = findViewById(R.id.edit_email); // Nouveau champ Email
+        EditText editEmail = findViewById(R.id.edit_email);
         EditText editPseudo = findViewById(R.id.edit_pseudo);
         EditText editDob = findViewById(R.id.edit_dob);
         EditText editOldPass = findViewById(R.id.edit_old_password);
@@ -59,9 +61,9 @@ public class ProfilActivity extends AppCompatActivity {
         Button saveBtn = findViewById(R.id.save_btn);
         profileImg = findViewById(R.id.profil_image);
 
+        editEmail.setEnabled(false);
         profileImg.setOnClickListener(v -> mGetContent.launch("image/*"));
 
-        // 1. CHARGER LES DONNÉES ACTUELLES
         new Thread(() -> {
             User user = db.utilisateurDao().getUserById(userId);
             if (user != null) {
@@ -77,27 +79,17 @@ public class ProfilActivity extends AppCompatActivity {
             }
         }).start();
 
-        // 2. SAUVEGARDER LES MODIFICATIONS
         saveBtn.setOnClickListener(v -> {
-            String newEmail = editEmail.getText().toString().trim();
             String newPseudo = editPseudo.getText().toString().trim();
             String newDob = editDob.getText().toString().trim();
             String oldPassInput = editOldPass.getText().toString().trim();
             String newPassInput = editNewPass.getText().toString().trim();
 
-            // Validation de base
-            if (newEmail.isEmpty() || newPseudo.isEmpty() || newDob.isEmpty()) {
-                Toast.makeText(this, "Email, Pseudo et Date obligatoires", Toast.LENGTH_SHORT).show();
+            if (newPseudo.isEmpty() || newDob.isEmpty()) {
+                Toast.makeText(this, "Pseudo et Date de naissance obligatoires", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Validation format Email
-            if (!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
-                Toast.makeText(this, "Format d'email invalide", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // Validation Format Date (JJ/MM/AAAA)
             if (!newDob.matches("^[0-9]{2}/[0-9]{2}/[0-9]{4}$")) {
                 Toast.makeText(this, "Format date invalide (JJ/MM/AAAA)", Toast.LENGTH_SHORT).show();
                 return;
@@ -107,40 +99,50 @@ public class ProfilActivity extends AppCompatActivity {
                 User user = db.utilisateurDao().getUserById(userId);
                 if (user != null) {
 
-                    // --- VÉRIFICATION SI L'EMAIL A CHANGÉ ---
-                    if (!user.email.equalsIgnoreCase(newEmail)) {
-                        User doublon = db.utilisateurDao().verifierEmailExiste(newEmail);
-                        if (doublon != null) {
-                            runOnUiThread(() -> Toast.makeText(this, "Cet email est déjà utilisé", Toast.LENGTH_SHORT).show());
-                            return;
-                        }
-                    }
-
-                    // --- LOGIQUE CHANGEMENT MOT DE PASSE ---
+                    // --- LOGIQUE CHANGEMENT MOT DE PASSE AVEC HACHAGE ---
                     if (!oldPassInput.isEmpty() || !newPassInput.isEmpty()) {
-                        if (!user.password.equals(oldPassInput)) {
+
+                        // 1. On hache l'ancien mot de passe saisi pour comparer avec la base
+                        String oldPassHached = HashUtil.hashPassword(oldPassInput);
+
+                        if (!user.password.equals(oldPassHached)) {
                             runOnUiThread(() -> Toast.makeText(this, "Ancien mot de passe incorrect", Toast.LENGTH_SHORT).show());
                             return;
                         }
+
                         if (newPassInput.length() < 4) {
                             runOnUiThread(() -> Toast.makeText(this, "Nouveau mot de passe trop court", Toast.LENGTH_SHORT).show());
                             return;
                         }
-                        user.password = newPassInput;
+
+                        // 2. On hache le NOUVEAU mot de passe avant de l'enregistrer
+                        user.password = HashUtil.hashPassword(newPassInput);
+
+                        // Note : Comme newUser est envoyé à Firebase via set() ou update(),
+                        // le mot de passe haché sera aussi mis à jour sur le Cloud si tu envoies l'objet complet.
+                        // Ici, on met à jour Room. Pour Firebase, on ne met à jour que les infos de profil (nom, etc.)
                     }
 
-                    // Mise à jour de l'objet User
-                    user.email = newEmail;
                     user.nom = newPseudo;
                     user.dateNaissance = newDob;
                     user.imagePath = currentPhotoPath;
 
                     db.utilisateurDao().modifier(user);
 
-                    // Mise à jour de la session SharedPreferences
+                    FirebaseFirestore dbFirebase = FirebaseFirestore.getInstance();
+                    dbFirebase.collection("users")
+                            .document(user.email)
+                            .update(
+                                    "nom", newPseudo,
+                                    "dateNaissance", newDob,
+                                    "imagePath", currentPhotoPath,
+                                    "password", user.password // On synchronise aussi le nouveau haché sur Firebase
+                            )
+                            .addOnSuccessListener(aVoid -> Log.d("Firebase", "Profil synchronisé"))
+                            .addOnFailureListener(e -> Log.e("Firebase", "Erreur synchro", e));
+
                     SharedPreferences.Editor editor = getSharedPreferences("mon_app", MODE_PRIVATE).edit();
                     editor.putString("utilisateur_connecte", newPseudo);
-                    editor.putString("utilisateur_email", newEmail);
                     editor.apply();
 
                     runOnUiThread(() -> {
