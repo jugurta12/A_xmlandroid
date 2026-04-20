@@ -143,7 +143,7 @@ public class AjoutBarActivity extends AppCompatActivity {
                 return;
             }
 
-            // Récupération de l'état du Switch (Privé ou Public)
+            // Récupération de l'état du switch (Privé ou Public)
             boolean isPrivate = switchPrivate.isChecked();
 
             List<Integer> ids = chipGroupAmbiance.getCheckedChipIds();
